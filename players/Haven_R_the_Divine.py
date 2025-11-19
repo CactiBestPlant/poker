@@ -25,9 +25,9 @@ class HavenRtheDivine(PokerBotAPI):
         """Make a random legal action"""
         
         # Choose a random legal action
-        if PlayerAction.RAISE in legal_actions
+        if PlayerAction.RAISE in legal_actions:
             action = PlayerAction.RAISE
-        else
+        else:
             action = random.choice(legal_actions)
         
         # If raising, choose a random valid amount

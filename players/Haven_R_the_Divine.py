@@ -24,7 +24,10 @@ class RandomBot(PokerBotAPI):
         """Make a random legal action"""
         
         # Choose a random legal action
-        action = random.choice(legal_actions)
+        if PlayerAction.RAISE in legal_actions
+            action = PlayerAction.RAISE
+        else
+            action = random.choice(legal_actions)
         
         # If raising, choose a random valid amount
         if action == PlayerAction.RAISE:

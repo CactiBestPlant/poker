@@ -1,3 +1,4 @@
+"""
 Random Bot - Makes random legal decisions
 This is a simple example bot for testing the tournament system
 """

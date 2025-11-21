@@ -33,7 +33,7 @@ class HavenRtheDivine(PokerBotAPI):
         # If raising, choose a random valid amount
         if action == PlayerAction.RAISE:
             # Random raise between min_bet and max_bet
-            amount = random.randint(min_bet, max_bet)
+            amount = random.randint(min_bet, max_bet*.9)
             return action, amount
         
         # All other actions don't need an amount

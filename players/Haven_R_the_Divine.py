@@ -6,8 +6,8 @@ from typing import List, Dict, Any
 import random
 
 from bot_api import PokerBotAPI, PlayerAction
-from engine.cards import Card
 from engine.poker_game import GameState
+from engine.cards import Card, Rank, HandEvaluator
 
 
 class HavenRtheDivine(PokerBotAPI):
@@ -22,6 +22,9 @@ class HavenRtheDivine(PokerBotAPI):
     
     def get_action(self, game_state: GameState, hole_cards: List[Card], 
                    legal_actions: List[PlayerAction], min_bet: int, max_bet: int) -> tuple:
+        all_cards = hole_cards + game_state.community_cards
+        hand_type, _, _ = HandEvaluator.evaluate_best_hand(all_cards)
+        hand_rank = HandEvaluator.HAND_RANKINGS[hand_type]
         """Make a random legal action"""
         
         # Choose a random legal action
@@ -32,9 +35,12 @@ class HavenRtheDivine(PokerBotAPI):
         
         # If raising, choose a random valid amount
         if action == PlayerAction.RAISE:
-            # Random raise between min_bet and max_bet
-            amount = random.randint(min_bet, max_bet*.9)
-            return action, amount
+            if hand_rank <= HandEvaluator.HAND_RANKINGS['pair']:
+                amount = min_bet
+            elif hand_rank > HandEvaluator.HAND_RANKINGS['pair'] and hand_rank < HandEvaluator.HAND_RANKINGS['four_of_a_kind']:
+                amount = random.randint(min_bet,max_bet)
+            else:
+                amount = max_bet
         
         # All other actions don't need an amount
         return action, 0

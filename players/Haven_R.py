@@ -10,7 +10,7 @@ from engine.poker_game import GameState
 from engine.cards import Card, Rank, HandEvaluator
 
 
-class HavenRtheDivine(PokerBotAPI):
+class HavenR(PokerBotAPI):
     """
     A simple bot that makes random legal decisions.
     Useful for testing the tournament system.

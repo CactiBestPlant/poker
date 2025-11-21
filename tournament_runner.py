@@ -2,8 +2,10 @@
 Main Tournament Runner
 Orchestrates the entire poker tournament from start to finish
 """
+import sys
 import logging
 import time
+import random
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 import json
@@ -51,11 +53,11 @@ class TournamentRunner:
         
         # Configure logging
         logging.basicConfig(
-            level=logging.INFO,
+            level=logging.DEBUG,
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler(log_filename),
-                logging.StreamHandler()  # Also log to console
+                logging.FileHandler(log_filename, encoding='utf-8'),
+                logging.StreamHandler(sys.stdout)  # Also log to console
             ]
         )
     
@@ -138,7 +140,8 @@ class TournamentRunner:
                 game = PokerGame(bots, 
                                starting_chips=0,  # Will use tournament chip counts
                                small_blind=small_blind, 
-                               big_blind=big_blind)
+                               big_blind=big_blind,
+                               dealer_button_index=random.randrange(len(bots)))
                 
                 # Set actual chip counts from tournament
                 for player in player_ids:
@@ -150,6 +153,7 @@ class TournamentRunner:
         for table_id, game in self.current_games.items():
             try:
                 self.play_single_hand(table_id, game)
+                self.tournament.tables[table_id].dealer_button = game.dealer_button
             except Exception as e:
                 self.logger.error(f"Error playing hand on table {table_id}: {str(e)}")
         
